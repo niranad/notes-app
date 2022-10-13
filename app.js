@@ -8,7 +8,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
+// import usersRouter from './routes/users.js';
+import notesRouter from './routes/notes.js';
 
 const viewsDirPath = new URL('./views', import.meta.url).pathname;
 const publicDirPath = new URL('./public', import.meta.url).pathname;
@@ -26,7 +27,8 @@ app.use(cookieParser());
 app.use(express.static(publicDirPath));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
+app.use('/notes', notesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

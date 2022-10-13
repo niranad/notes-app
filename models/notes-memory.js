@@ -11,14 +11,14 @@ create = update = (key, title, body) => {
   });
 };
 
-read = () => {
+read = (key) => {
   return new Promise((resolve, reject) => {
     if (notes[key]) resolve(notes[key]);
     else reject(`Note ${key} does not exist`);
   });
 };
 
-destroy = () => {
+destroy = (key) => {
   return new Promise((resolve, reject) => {
     if (notes[key]) {
       delete notes[key];
@@ -37,5 +37,5 @@ count = () =>
     resolve(notes.length);
   });
 
-export { create, update, read, destroy };
+export { create, update, read, destroy, keylist, count };
 

@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <%- include('headerStuff') %>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <%- include('pageHeader') %>
+    <% if (notelist.length > 0) { %>
+    <ul><% for (let note of notelist) {
+      %><li>
+        <%= note.key %>:
+        <a href="/notes/view?key=<%= note.key %>">
+          <%= note.title %>
+        </a>
+      </li><% } %>
+    </ul>
+    <% } %>
+    <%- include('footer') %>
   </body>
 </html>
