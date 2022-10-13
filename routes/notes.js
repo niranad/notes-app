@@ -28,5 +28,19 @@ router.post('/save', (req, res, next) => {
   });
 });
 
+router.get('/view', (req, res, next) => {
+  NoteModel.read(req.query.key)
+    .then((note) => {
+      res.render('noteview', {
+        title: note ? note.title : '',
+        notekey: req.query.key,
+        note,
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 export default router;
 
