@@ -57,5 +57,19 @@ router.get('/edit', (req, res, next) => {
     });
 });
 
+router.get('/destroy', (req, res, next) => {
+  NoteModel.read(req.query.key)
+    .then((note) => {
+      res.render('notedestroy', {
+        title: note ? note.title : '',
+        notekey: req.query.key,
+        note,
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 export default router;
 

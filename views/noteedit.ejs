@@ -5,7 +5,7 @@
   </head>
   <body>
     <%- include('pageHeader') %>
-    <form method="POST" action="/notes/save">
+    <form autocomplete="off" method="POST" action="/notes/save">
       <input
         type="hidden"
         name="docreate"
@@ -27,9 +27,7 @@
         <input type="text" name="title" value="<%= note ? note.title : '' %>" />
       </p>
       <br />
-      <textarea rows=5 cols=40 name="body">
-        <%= note ? note.body : "" %>
-      </textarea>
+      <textarea rows=5 cols=40 name="body"><%= note ? note.body : "" %></textarea>
       <br />
       <input type="submit" value="Submit" />
     </form>
