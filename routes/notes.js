@@ -42,5 +42,20 @@ router.get('/view', (req, res, next) => {
     });
 });
 
+router.get('/edit', (req, res, next) => {
+  NoteModel.read(req.query.key)
+    .then((note) => {
+      res.render('noteedit', {
+        title: note ? 'Edit ' + note.title : 'Add a Note',
+        docreate: false,
+        notekey: req.query.key,
+        note,
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 export default router;
 
