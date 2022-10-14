@@ -13,6 +13,8 @@ import notesRouter from './routes/notes.js';
 
 const viewsDirPath = new URL('./views', import.meta.url).pathname;
 const publicDirPath = new URL('./public', import.meta.url).pathname;
+const bootstrapPath = new URL('./bower_components/bootstrap/dist', import.meta.url).pathname;
+const jqueryPath = new URL('./bower_components/jquery/dist', import.meta.url).pathname;
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(publicDirPath));
+app.use('/vendor/bootstrap', express.static(bootstrapPath));
+app.use('/vendor/jquery', express.static(jqueryPath));
 
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);

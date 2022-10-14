@@ -4,12 +4,16 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "postinstall": "./node_modules/.bin/bower install",
+    "start": "nodemon ./bin/www",
+    "server1": "PORT=3001 nodemon ./bin/www",
+    "server2": "PORT=3002 nodemon ./bin/www"
   },
   "type": "module",
   "bin": {
     "www": "./bin/www.js"
   },
+  "license": "NOLICENSE",
   "dependencies": {
     "cookie-parser": "^1.4.4",
     "debug": "^4.3.4",
@@ -20,6 +24,7 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
+    "bower": "^1.8.14",
     "nodemon": "^2.0.20"
   }
 }

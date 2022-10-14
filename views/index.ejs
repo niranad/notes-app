@@ -4,17 +4,25 @@
     <%- include('headerStuff') %>
   </head>
   <body>
-    <%- include('pageHeader') %>
-    <% if (notelist.length > 0) { %>
-    <ul><% for (let note of notelist) {
-      %><li>
-        <%= note.key %>:
-        <a href="/notes/view?key=<%= note.key %>">
-          <%= note.title %>
-        </a>
-      </li><% } %>
-    </ul>
-    <% } %>
-    <%- include('footer') %>
+    <div class="container-fluid">
+      <%- include('pageHeader') %> <% if (notelist.length > 0) { %>
+
+      <div class="row"
+        ><div class="col-xs-12">
+          <div class="btn-group-vertical" role="group" style="width: 100%">
+            <% for (let note of notelist) { %>
+            <a class="btn btn-lg btn-block btn-default" href="/notes/view?key=<%= note.key %>"> <%= note.title %> </a><%
+            } %>
+          </div>
+
+          <% } else { %>
+          <p style="font-weight: bolder; color: gray;"
+            >You have no notes for now. Ready to take some notes?</p
+          >
+        </div>
+      </div>
+      <% } %> <%- include('footer') %>
+    </div>
   </body>
 </html>
+

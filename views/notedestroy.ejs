@@ -4,12 +4,12 @@
     <%- include('headerStuff') %>
   </head>
   <body>
-    <% include('pageHeader') %>
+    <%- include('pageHeader') %>
     <form method="POST" action="/notes/destroy/confirm">
       <input type="hidden" name="notekey" value="<%= note ? notekey : ''%>" />
       <p>Delete <%= note.title %> ?</p>
       <br />
-      <input type="submit" value="DELETE" />
+      <input class="delete-btn" type="submit" value="DELETE" />
       <a href="/notes/view?key=<%= notekey %>">Cancel</a>
     </form>
     <%- include('footer') %>

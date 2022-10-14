@@ -11,6 +11,11 @@ router.get('/add', (req, res, next) => {
     docreate: true,
     notekey: '',
     note: undefined,
+    breadcrumbs: [
+      { href: '/', text: 'Home'},
+      { active: true, text: 'Add Note'}
+    ],
+    hideAddNote: true,
   });
 });
 
@@ -35,6 +40,10 @@ router.get('/view', (req, res, next) => {
         title: note ? note.title : '',
         notekey: req.query.key,
         note,
+        breadcrumbs: [
+          { href: '/', text: 'Home'},
+          { active: true, text: note.title }
+        ]
       });
     })
     .catch((err) => {
@@ -50,6 +59,11 @@ router.get('/edit', (req, res, next) => {
         docreate: false,
         notekey: req.query.key,
         note,
+        hideAddNote: true,
+        breadcrumbs: [
+          { href: '/', text: 'Home' },
+          { active: true, text: note.title }
+        ]
       });
     })
     .catch((err) => {
@@ -64,6 +78,10 @@ router.get('/destroy', (req, res, next) => {
         title: note ? note.title : '',
         notekey: req.query.key,
         note,
+        breadcrumbs: [
+          { href: '/', text: 'Home' },
+          { active: true, text: 'Delete Note' },
+        ],
       });
     })
     .catch((err) => {
@@ -71,5 +89,16 @@ router.get('/destroy', (req, res, next) => {
     });
 });
 
+router.post('/destroy/confirm', (req, res, next) => {
+  NoteModel.destroy(req.body.notekey)
+    .then(() => {
+      res.redirect('/');
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 export default router;
+
 

@@ -3,3 +3,6 @@ node_modules
 
 # secret
 .env
+
+# bower files
+bower_components

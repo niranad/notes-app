@@ -5,16 +5,21 @@
   </head>
   <body>
     <%- include('pageHeader') %>
-    <h3><%= note ? note.title : "" %></h3>
-    <p><%= note ? note.body : "" %></p>
-    <p>Key:&nbsp;<%= notekey %></p>
+    <div class="row"
+      ><div class="col-xs-12">
+        <h3><%= note ? note.title : "" %></h3>
+        <p><%= note ? note.body : "" %></p>
+        <p>Key:&nbsp;<%= notekey %></p>
+      </div></div
+    >
+
     <% if (notekey) { %>
-      <hr />
-      <p>
-        <a href="/notes/destroy?key=<%= notekey %>">Delete</a> |
-        <a href="/notes/edit?key=<%= notekey %>">Edit</a>
-      </p>
-    <% } %>
-    <%- include('footer') %>
+    <div class="row"
+      ><div class="btn-group col-sm-12">
+        <a class="btn btn-danger" href="/notes/destroy?key=<%= notekey %>" role="button">Delete</a>
+        <a class="btn btn-primary" href="/notes/edit?key=<%= notekey %>" role="button">Edit</a>
+      </div></div
+    >
+    <% } %> <%- include('footer') %>
   </body>
 </html>

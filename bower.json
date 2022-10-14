@@ -1,0 +1,25 @@
+{
+  "name": "notes-app",
+  "description": "Note-taking application",
+  "main": "app.js",
+  "authors": [
+    "Adeniran J. Olukanni <adesite67@gmail.com>"
+  ],
+  "license": "NOLICENSE",
+  "keywords": [
+    "Note-taking",
+    "Online-note-keeper"
+  ],
+  "homepage": "https://github.com/niranad/notes-app",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "3.3.6"
+  }
+}

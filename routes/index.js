@@ -25,7 +25,11 @@ router.get('/', (req, res, next) => {
       return Promise.all(keyPromises);
     })
     .then((notelist) => {
-      res.render('index', { title: 'Notes', notelist });
+      res.render('index', {
+        title: 'Notes',
+        notelist,
+        breadcrumbs: [{ href: '/', text: 'Home' }],
+      });
     })
     .catch((err) => {
       next(err);
