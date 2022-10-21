@@ -1,6 +1,15 @@
 import { Router } from 'express';
-import util from 'util';
-import * as NoteModel from '../models/notes-memory.js';
+import * as NoteModel1 from '../models/notes-memory.js';
+import * as NoteModel2 from '../models/notes-fs.js';
+import path from 'path';
+import Debug from 'debug';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const NoteModel = process.env.NOTES_MODEL ? NoteModel2 : NoteModel1;
+const log = Debug('notes-app:routes');
+const error = Debug('notes-app:error');
 
 const router = Router();
 
@@ -12,8 +21,8 @@ router.get('/add', (req, res, next) => {
     notekey: '',
     note: undefined,
     breadcrumbs: [
-      { href: '/', text: 'Home'},
-      { active: true, text: 'Add Note'}
+      { href: '/', text: 'Home' },
+      { active: true, text: 'Add Note' },
     ],
     hideAddNote: true,
   });
@@ -21,19 +30,23 @@ router.get('/add', (req, res, next) => {
 
 router.post('/save', (req, res, next) => {
   let p;
-  if (req.body.docreate === 'create') {
-    p = NoteModel.create(req.body.notekey, req.body.title, req.body.body);
+  let {notekey, title, body, docreate} = req.body;
+  notekey = notekey.replace(/[^0-9a-z-]/gi, '') + '-' + new Date().getTime();
+
+  if (docreate === 'create') {
+    p = NoteModel.create(notekey, title, body);
   } else {
-    p = NoteModel.update(req.body.notekey, req.body.title, req.body.body);
+    p = NoteModel.update(notekey, title, body);
   }
   p.then((note) => {
-    res.redirect('/notes/view?key=' + req.body.notekey);
+    res.redirect('/notes/view?key=' + notekey);
   }).catch((err) => {
     next(err);
   });
 });
 
 router.get('/view', (req, res, next) => {
+  console.log(req.query);
   NoteModel.read(req.query.key)
     .then((note) => {
       res.render('noteview', {
@@ -41,9 +54,9 @@ router.get('/view', (req, res, next) => {
         notekey: req.query.key,
         note,
         breadcrumbs: [
-          { href: '/', text: 'Home'},
-          { active: true, text: note.title }
-        ]
+          { href: '/', text: 'Home' },
+          { active: true, text: note.title },
+        ],
       });
     })
     .catch((err) => {
@@ -62,8 +75,8 @@ router.get('/edit', (req, res, next) => {
         hideAddNote: true,
         breadcrumbs: [
           { href: '/', text: 'Home' },
-          { active: true, text: note.title }
-        ]
+          { active: true, text: note.title },
+        ],
       });
     })
     .catch((err) => {
@@ -100,5 +113,4 @@ router.post('/destroy/confirm', (req, res, next) => {
 });
 
 export default router;
-
 

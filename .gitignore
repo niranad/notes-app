@@ -6,3 +6,9 @@ node_modules
 
 # bower files
 bower_components
+
+# log files
+logs
+
+# fs notes
+notes
