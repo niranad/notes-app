@@ -5,29 +5,27 @@
  */
 import http from 'http';
 import app from '../app.js';
-import Debug from 'debug';
-import dotenv from 'dotenv';
+import debug from 'debug';
 
-dotenv.config();
+/**
+ * Log debug info to console when DEBUG env variable is set.
+ */
+const log = debug('notes-app:server');
 
-const debug = Debug('notes-app:server');
 /**
  * Get port from environment and store in Express.
  */
-
 const port = normalizePort(process.env.PORT);
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-
 const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -85,6 +83,6 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  log('Listening on ' + bind);
 }
 

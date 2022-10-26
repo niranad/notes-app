@@ -5,9 +5,10 @@
   "main": "app.js",
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install",
-    "start": "nodemon ./bin/www",
-    "server1": "NOTES_MODEL=models/notes-fs PORT=3001 nodemon ./bin/www",
-    "server2": "NOTES_MODEL=models/notes-fs PORT=3002 nodemon ./bin/www"
+    "inmem-server": "DEBUG=notes-app:* nodemon ./bin/www",
+    "fs-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-fs PORT=3001 nodemon ./bin/www",
+    "levelup-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-levelup PORT=3002 nodemon ./bin/www",
+    "sqlite3-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-sqlite3 PORT=3003 nodemon ./bin/www"
   },
   "type": "module",
   "bin": {
@@ -19,15 +20,18 @@
     "debug": "^4.3.4",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
+    "encoding-down": "^7.1.0",
     "express": "^4.18.1",
     "file-stream-rotator": "^0.6.1",
     "http-errors": "^2.0.0",
     "leveldown": "^6.1.1",
     "levelup": "^5.1.1",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "sqlite3": "^5.1.2"
   },
   "devDependencies": {
     "bower": "^1.8.14",
     "nodemon": "^2.0.20"
   }
 }
+

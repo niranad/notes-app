@@ -19,7 +19,7 @@ const log = Debug('notes-app:fs-model');
 const error = Debug('notes-app:error');
 
 const notesDir = () => {
-  const dir = process.env.NOTES_FS_DIR || 'notes-fs-data';
+  const dir = process.env.NOTES_FS_DIR;
   return new Promise((resolve, reject) => {
     access(dir, constants.F_OK, (err) => {
       if (err) {

@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS notes (
+  notekey VARCHAR(50) NOT NULL,
+  title VARCHAR(150) NOT NULL,
+  author VARCHAR(50),
+  body TEXT NOT NULL
+)

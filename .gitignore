@@ -10,5 +10,7 @@ bower_components
 # log files
 logs
 
-# fs notes
+# notes data
 notes
+notes-levelup-db
+sqlite3-notes-db

@@ -1,14 +1,23 @@
 import { Router } from 'express';
-import * as NoteModel1 from '../models/notes-memory.js';
-import * as NoteModel2 from '../models/notes-fs.js';
-import path from 'path';
+import * as InMemModel from '../models/notes-memory.js';
+import * as FSModel from '../models/notes-fs.js';
+import * as LevelupModel from '../models/notes-levelup.js';
+import * as SQLite3Model from '../models/notes-sqlite3.js';
 import Debug from 'debug';
 import dotenv from 'dotenv';
 
 dotenv.config();
+const { NOTES_MODEL } = process.env;
 
 const router = Router();
-const NoteModel = process.env.NOTES_MODEL ? NoteModel2 : NoteModel1;
+const NoteModel =
+  NOTES_MODEL === 'models/notes-levelup'
+    ? LevelupModel
+    : NOTES_MODEL === 'models/notes-fs'
+    ? FSModel
+    : NOTES_MODEL === 'models/notes-sqlite3'
+    ? SQLite3Model
+    : InMemModel;
 
 const log = Debug('notes-app:routes');
 const error = Debug('notes-app:error');
@@ -21,7 +30,7 @@ router.get('/', (req, res, next) => {
       for (let key of keylist) {
         keyPromises.push(
           NoteModel.read(key).then((note) => {
-            return { key: note.key, title: note.title };
+            return { key: note.notekey, title: note.title };
           }),
         );
       }
