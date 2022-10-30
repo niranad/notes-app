@@ -3,12 +3,14 @@ import * as InMemModel from '../models/notes-memory.js';
 import * as FSModel from '../models/notes-fs.js';
 import * as LevelupModel from '../models/notes-levelup.js';
 import * as SQLiteModel from '../models/notes-sqlite3.js';
+import * as SequelizeModel from '../models/notes-sequelize.js';
+import * as MongooseModel from '../models/notes-mongoose.js';
 import Debug from 'debug';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const { NOTES_MODEL } = process.env;
 
+const { NOTES_MODEL } = process.env;
 const NoteModel =
   NOTES_MODEL === 'models/notes-levelup'
     ? LevelupModel
@@ -16,6 +18,10 @@ const NoteModel =
     ? FSModel
     : NOTES_MODEL === 'models/notes-sqlite3'
     ? SQLiteModel
+    : NOTES_MODEL === 'models/notes-sequelize'
+    ? SequelizeModel
+    : NOTES_MODEL === 'models/notes-mongoose'
+    ? MongooseModel
     : InMemModel;
 const log = Debug('notes-app:routes');
 const error = Debug('notes-app:error');
@@ -113,7 +119,7 @@ router.get('/destroy', (req, res, next) => {
 router.post('/destroy/confirm', (req, res, next) => {
   NoteModel.destroy(req.body.notekey)
     .then(() => {
-      res.redirect('/');
+      setTimeout(() => res.redirect('/'), 1000);
     })
     .catch((err) => {
       next(err);
@@ -121,4 +127,3 @@ router.post('/destroy/confirm', (req, res, next) => {
 });
 
 export default router;
-

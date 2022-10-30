@@ -3,6 +3,8 @@ import * as InMemModel from '../models/notes-memory.js';
 import * as FSModel from '../models/notes-fs.js';
 import * as LevelupModel from '../models/notes-levelup.js';
 import * as SQLite3Model from '../models/notes-sqlite3.js';
+import * as SequelizeModel from '../models/notes-sequelize.js';
+import * as MongooseModel from '../models/notes-mongoose.js';
 import Debug from 'debug';
 import dotenv from 'dotenv';
 
@@ -17,6 +19,10 @@ const NoteModel =
     ? FSModel
     : NOTES_MODEL === 'models/notes-sqlite3'
     ? SQLite3Model
+    : NOTES_MODEL === 'models/notes-sequelize'
+    ? SequelizeModel
+    : NOTES_MODEL === 'models/notes-mongoose'
+    ? MongooseModel
     : InMemModel;
 
 const log = Debug('notes-app:routes');

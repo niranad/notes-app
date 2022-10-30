@@ -28,19 +28,23 @@ export const connectDB = () => {
       },
     );
 
-    readFile(join(process.cwd(), 'models/schema-sqlite3.sql'), (err, data) => {
-      if (err) {
-        error('Failed to read sqlite3 schema file');
-        reject(err);
-      } else {
-        schema = data.toString().replace(/[\n\r]/g, '');
-        db.run(schema, (err) => {
-          if (err) return reject(err);
-          log('Opened Sqlite3 for read and write operations');
-          resolve();
-        });
-      }
-    });
+    readFile(
+      join(process.cwd(), 'models/schema-sqlite3.sql'),
+      'utf8',
+      (err, data) => {
+        if (err) {
+          error('Failed to read sqlite3 schema file');
+          reject(err);
+        } else {
+          schema = data.replace(/[\n\r]/g, '');
+          db.run(schema, (err) => {
+            if (err) return reject(err);
+            log('Opened Sqlite3 for read and write operations');
+            resolve();
+          });
+        }
+      },
+    );
   });
 };
 

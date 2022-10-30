@@ -10,7 +10,11 @@ bower_components
 # log files
 logs
 
-# notes data
+# notes test data
 notes
 notes-levelup-db
 sqlite3-notes-db
+notes-sequelize.sqlite3
+
+# sequelize database yaml config
+sequelize-*.yaml

@@ -8,7 +8,11 @@
     "inmem-server": "DEBUG=notes-app:* nodemon ./bin/www",
     "fs-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-fs PORT=3001 nodemon ./bin/www",
     "levelup-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-levelup PORT=3002 nodemon ./bin/www",
-    "sqlite3-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-sqlite3 PORT=3003 nodemon ./bin/www"
+    "sqlite3-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-sqlite3 PORT=3003 nodemon ./bin/www",
+    "sequelize-sqlite-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml PORT=3004 NOTES_MODEL=models/notes-sequelize nodemon ./bin/www",
+    "sequelize-mysql-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-mysql.yaml PORT=3005 NOTES_MODEL=models/notes-sequelize nodemon ./bin/www",
+    "sequelize-pg-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-pg.yaml PORT=3006 NOTES_MODEL=models/notes-sequelize nodemon ./bin/www",
+    "mongoose-mongodb-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-mongoose PORT=3007 nodemon ./bin/www"
   },
   "type": "module",
   "bin": {
@@ -24,9 +28,15 @@
     "express": "^4.18.1",
     "file-stream-rotator": "^0.6.1",
     "http-errors": "^2.0.0",
+    "js-yaml": "^4.1.0",
     "leveldown": "^6.1.1",
     "levelup": "^5.1.1",
+    "mongoose": "^6.7.0",
     "morgan": "^1.9.1",
+    "mysql2": "^2.3.3",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.25.3",
     "sqlite3": "^5.1.2"
   },
   "devDependencies": {
@@ -34,4 +44,3 @@
     "nodemon": "^2.0.20"
   }
 }
-
