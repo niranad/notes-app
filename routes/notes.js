@@ -1,40 +1,34 @@
 import { Router } from 'express';
-import * as InMemModel from '../models/notes-memory.js';
-import * as FSModel from '../models/notes-fs.js';
-import * as LevelupModel from '../models/notes-levelup.js';
-import * as SQLiteModel from '../models/notes-sqlite3.js';
-import * as SequelizeModel from '../models/notes-sequelize.js';
-import * as MongooseModel from '../models/notes-mongoose.js';
 import Debug from 'debug';
 import dotenv from 'dotenv';
+import { ensureAuthenticated } from './users.js'; 
+
 
 dotenv.config();
 
-const { NOTES_MODEL } = process.env;
-const NoteModel =
-  NOTES_MODEL === 'models/notes-levelup'
-    ? LevelupModel
-    : NOTES_MODEL === 'models/notes-fs'
-    ? FSModel
-    : NOTES_MODEL === 'models/notes-sqlite3'
-    ? SQLiteModel
-    : NOTES_MODEL === 'models/notes-sequelize'
-    ? SequelizeModel
-    : NOTES_MODEL === 'models/notes-mongoose'
-    ? MongooseModel
-    : InMemModel;
+let NoteModel;
+
+(async () => {
+  if (process.env.NOTES_MODEL) {
+    NoteModel = await import('../' + process.env.NOTES_MODEL);
+  } else {
+    NoteModel = await import('../models/notes-memory.js');
+  }
+})();
+
 const log = Debug('notes-app:routes');
 const error = Debug('notes-app:error');
 
 const router = Router();
 
 // ADD Note
-router.get('/add', (req, res, next) => {
+router.get('/add', ensureAuthenticated, (req, res, next) => {
   res.render('noteedit', {
     title: 'Add a Note',
     docreate: true,
     notekey: '',
     note: undefined,
+    user: req.user ? req.user : undefined,
     breadcrumbs: [
       { href: '/', text: 'Home' },
       { active: true, text: 'Add Note' },
@@ -43,7 +37,7 @@ router.get('/add', (req, res, next) => {
   });
 });
 
-router.post('/save', (req, res, next) => {
+router.post('/save', ensureAuthenticated, (req, res, next) => {
   let p;
   let { notekey, title, body, docreate } = req.body;
 
@@ -67,6 +61,7 @@ router.get('/view', (req, res, next) => {
         title: note ? note.title : '',
         notekey: req.query.key,
         note,
+        user: req.user ? req.user : undefined,
         breadcrumbs: [
           { href: '/', text: 'Home' },
           { active: true, text: note.title },
@@ -78,7 +73,7 @@ router.get('/view', (req, res, next) => {
     });
 });
 
-router.get('/edit', (req, res, next) => {
+router.get('/edit', ensureAuthenticated, (req, res, next) => {
   NoteModel.read(req.query.key)
     .then((note) => {
       res.render('noteedit', {
@@ -86,6 +81,7 @@ router.get('/edit', (req, res, next) => {
         docreate: false,
         notekey: req.query.key,
         note,
+        user: req.user ? req.user : undefined,
         hideAddNote: true,
         breadcrumbs: [
           { href: '/', text: 'Home' },
@@ -98,13 +94,14 @@ router.get('/edit', (req, res, next) => {
     });
 });
 
-router.get('/destroy', (req, res, next) => {
+router.get('/destroy', ensureAuthenticated, (req, res, next) => {
   NoteModel.read(req.query.key)
     .then((note) => {
       res.render('notedestroy', {
         title: note ? note.title : '',
         notekey: req.query.key,
         note,
+        user: req.user ? req.user : undefined,
         breadcrumbs: [
           { href: '/', text: 'Home' },
           { active: true, text: 'Delete Note' },
@@ -116,7 +113,7 @@ router.get('/destroy', (req, res, next) => {
     });
 });
 
-router.post('/destroy/confirm', (req, res, next) => {
+router.post('/destroy/confirm', ensureAuthenticated, (req, res, next) => {
   NoteModel.destroy(req.body.notekey)
     .then(() => {
       setTimeout(() => res.redirect('/'), 1000);
@@ -127,3 +124,4 @@ router.post('/destroy/confirm', (req, res, next) => {
 });
 
 export default router;
+

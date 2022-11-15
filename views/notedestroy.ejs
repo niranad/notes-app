@@ -5,13 +5,19 @@
   </head>
   <body>
     <%- include('pageHeader') %>
-    <form method="POST" action="/notes/destroy/confirm">
-      <input type="hidden" name="notekey" value="<%= note ? notekey : ''%>" />
-      <p>Delete <%= note.title %> ?</p>
-      <br />
-      <input class="delete-btn" type="submit" value="DELETE" />
-      <a href="/notes/view?key=<%= notekey %>">Cancel</a>
-    </form>
+    <div class="row">
+      <div class="col-xs-12">
+        <% if (user) { %>
+          <form method="POST" action="/notes/destroy/confirm">
+            <input type="hidden" name="notekey" value="<%= note ? notekey : ''%>" />
+            <p>Delete <%= note.title %> ?</p>
+            <br />
+            <input class="delete-btn" type="submit" value="DELETE" />
+            <a href="/notes/view?key=<%= notekey %>">Cancel</a>
+          </form>
+        <% } else { %><% include('not-logged-in') %><% } %>
+      </div>
+    </div>
     <%- include('footer') %>
   </body>
 </html>

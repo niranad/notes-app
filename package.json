@@ -5,18 +5,18 @@
   "main": "app.js",
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install",
-    "inmem-server": "DEBUG=notes-app:* nodemon ./bin/www",
-    "fs-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-fs PORT=3001 nodemon ./bin/www",
-    "levelup-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-levelup PORT=3002 nodemon ./bin/www",
-    "sqlite3-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-sqlite3 PORT=3003 nodemon ./bin/www",
-    "sequelize-sqlite-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml PORT=3004 NOTES_MODEL=models/notes-sequelize nodemon ./bin/www",
-    "sequelize-mysql-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-mysql.yaml PORT=3005 NOTES_MODEL=models/notes-sequelize nodemon ./bin/www",
-    "sequelize-pg-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-pg.yaml PORT=3006 NOTES_MODEL=models/notes-sequelize nodemon ./bin/www",
-    "mongoose-mongodb-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-mongoose PORT=3007 nodemon ./bin/www"
+    "inmem-server": "DEBUG=notes-app:* nodemon app",
+    "fs-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-fs.js PORT=3001 USER_SERVICE_URL=http://localhost:3333  nodemon app",
+    "levelup-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-levelup.js PORT=3002 USER_SERVICE_URL=http://localhost:3333  nodemon app",
+    "sqlite3-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-sqlite3.js PORT=3003 USER_SERVICE_URL=http://localhost:3333  nodemon app",
+    "sequelize-sqlite-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml PORT=3004 USER_SERVICE_URL=http://localhost:3333  NOTES_MODEL=models/notes-sequelize.js nodemon app",
+    "sequelize-mysql-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-mysql.yaml PORT=3005 USER_SERVICE_URL=http://localhost:3333  NOTES_MODEL=models/notes-sequelize.js nodemon app",
+    "sequelize-pg-server": "DEBUG=notes-app:* SEQUELIZE_CONNECT=models/sequelize-pg.yaml PORT=3006 USER_SERVICE_URL=http://localhost:3333  NOTES_MODEL=models/notes-sequelize.js nodemon app",
+    "mongoose-server": "DEBUG=notes-app:* NOTES_MODEL=models/notes-mongoose.js PORT=3007 USER_SERVICE_URL=http://localhost:3333 nodemon app"
   },
   "type": "module",
   "bin": {
-    "www": "./bin/www.js"
+    "app": "app.js"
   },
   "license": "NOLICENSE",
   "dependencies": {
@@ -26,6 +26,7 @@
     "ejs": "^3.1.8",
     "encoding-down": "^7.1.0",
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "file-stream-rotator": "^0.6.1",
     "http-errors": "^2.0.0",
     "js-yaml": "^4.1.0",
@@ -34,9 +35,16 @@
     "mongoose": "^6.7.0",
     "morgan": "^1.9.1",
     "mysql2": "^2.3.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "passport.socketio": "^3.7.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
+    "restify-clients": "^4.2.0",
     "sequelize": "^6.25.3",
+    "session-file-store": "^1.5.0",
+    "socket.io": "^4.5.3",
     "sqlite3": "^5.1.2"
   },
   "devDependencies": {

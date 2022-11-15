@@ -18,3 +18,6 @@ notes-sequelize.sqlite3
 
 # sequelize database yaml config
 sequelize-*.yaml
+
+# session data
+sessions

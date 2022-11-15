@@ -48,103 +48,97 @@ export const connectDB = () => {
   });
 };
 
-export const create = (key, title, body) => {
-  return connectDB().then(() => {
-    let note = new Note(key, title, body);
-    return new Promise((resolve, reject) => {
-      db.run(
-        'INSERT INTO notes (notekey, title, body) VALUES(?, ?, ?);',
-        [key, title, body],
-        (err) => {
-          if (err) reject(err);
-          else {
-            log('CREATE ' + util.inspect(note));
-            resolve(note);
-          }
-        },
-      );
-    });
+export const create = async (key, title, body) => {
+  await connectDB();
+  let note = new Note(key, title, body);
+  return await new Promise((resolve, reject) => {
+    db.run(
+      'INSERT INTO notes (notekey, title, body) VALUES(?, ?, ?);',
+      [key, title, body],
+      (err) => {
+        if (err) reject(err);
+        else {
+          log('CREATE ' + util.inspect(note));
+          resolve(note);
+        }
+      },
+    );
   });
 };
 
-export const update = (key, title, body) => {
-  return connectDB().then(() => {
-    return new Promise((resolve, reject) => {
-      db.run(
-        'UPDATE notes SET title=?, body=? WHERE notekey=?',
-        [title, body, key],
-        (err) => {
-          if (err) {
-            error(`Failed to UPDATE note where key=${key}`);
-            reject(err);
-          } else {
-            log(`UPDATE note where key=${key}`);
-            db.each(
-              'SELECT * FROM notes WHERE notekey=?',
-              [key],
-              (err, row) => {
-                if (err) return reject(err);
-                resolve(row);
-              },
-            );
-          }
-        },
-      );
-    });
-  });
-};
-
-export const read = (key) => {
-  return connectDB().then(() => {
-    return new Promise((resolve, reject) => {
-      db.each('SELECT * FROM notes WHERE notekey=?', [key], (err, row) => {
+export const update = async (key, title, body) => {
+  await connectDB();
+  return await new Promise((resolve, reject) => {
+    db.run(
+      'UPDATE notes SET title=?, body=? WHERE notekey=?',
+      [title, body, key],
+      (err) => {
         if (err) {
-          error(`Failed to SELECT note with key=${key}`);
+          error(`Failed to UPDATE note where key=${key}`);
           reject(err);
         } else {
-          log('SELECT note with key=$');
-          resolve(row);
+          log(`UPDATE note where key=${key}`);
+          db.each(
+            'SELECT * FROM notes WHERE notekey=?',
+            [key],
+            (err_1, row) => {
+              if (err_1) return reject(err_1);
+              resolve(row);
+            },
+          );
         }
-      });
+      },
+    );
+  });
+};
+
+export const read = async (key) => {
+  await connectDB();
+  return await new Promise((resolve, reject) => {
+    db.each('SELECT * FROM notes WHERE notekey=?', [key], (err, row) => {
+      if (err) {
+        error(`Failed to SELECT note with key=${key}`);
+        reject(err);
+      } else {
+        log('SELECT note with key=$');
+        resolve(row);
+      }
     });
   });
 };
 
-export const destroy = (key) => {
-  return connectDB().then(() => {
-    return new Promise((resolve, reject) => {
-      db.run('DELETE FROM notes WHERE notekey=?', [key], (err) => {
-        if (err) {
-          error(`Failed to DELETE note with key=${key}`);
-          reject(err);
-        } else {
-          log(`DELETE note where key=${key}`);
-          resolve();
-        }
-      });
+export const destroy = async (key) => {
+  await connectDB();
+  return await new Promise((resolve, reject) => {
+    db.run('DELETE FROM notes WHERE notekey=?', [key], (err) => {
+      if (err) {
+        error(`Failed to DELETE note with key=${key}`);
+        reject(err);
+      } else {
+        log(`DELETE note where key=${key}`);
+        resolve();
+      }
     });
   });
 };
 
-export const keylist = () => {
-  return connectDB().then(() => {
-    return new Promise((resolve, reject) => {
-      db.all('SELECT notekey FROM notes', (err, rows) => {
-        if (err) return reject(err);
-        let keys = rows.map((obj) => obj.notekey);
-        resolve(keys);
-      });
+export const keylist = async () => {
+  await connectDB();
+  return await new Promise((resolve, reject) => {
+    db.all('SELECT notekey FROM notes', (err, rows) => {
+      if (err) return reject(err);
+      let keys = rows.map((obj) => obj.notekey);
+      resolve(keys);
     });
   });
 };
 
-export const count = () => {
-  return connectDB().then(() => {
-    return new Promise((resolve, reject) => {
-      db.all('SELECT notekey FROM notes', (err, rows) => {
-        if (err) return reject(err);
-        resolve(rows.length);
-      });
+export const count = async () => {
+  await connectDB();
+  return await new Promise((resolve, reject) => {
+    db.all('SELECT notekey FROM notes', (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows.length);
     });
   });
 };
